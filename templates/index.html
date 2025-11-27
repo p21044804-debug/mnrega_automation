@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>MNREGA Muster Roll Excel Bot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .wrapper {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 420px;
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+      animation: fadeIn 0.6s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .title {
+      text-align: center;
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #0f172a;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 6px;
+      display: block;
+      color: #0f172a;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      font-size: 14px;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    input[type="text"]:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      border: none;
+      border-radius: 12px;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+    }
+
+    .flash {
+      font-size: 13px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+    }
+
+    .flash.error {
+      background: #fee2e2;
+      color: #7f1d1d;
+    }
+
+    .info {
+      margin-top: 18px;
+      font-size: 11px;
+      text-align: center;
+      color: #64748b;
+    }
+
+    footer {
+      background: #0f172a;
+      color: #cbd5e1;
+      text-align: center;
+      padding: 15px 10px;
+      font-size: 12px;
+    }
+
+    footer span {
+      display: block;
+      margin-top: 4px;
+    }
+
+    footer strong {
+      color: #38bdf8;
+      font-weight: 500;
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: 22px;
+      }
+      .title {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrapper">
+    <div class="card">
+      <div class="title">MNREGA Excel Bot</div>
+      <div class="subtitle">
+        Enter Work Code and download complete<br>
+        Muster Roll data in Excel format
+      </div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, msg in messages %}
+            <div class="flash {{ category }}">{{ msg }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <form method="POST">
+        <div class="form-group">
+          <label for="work_code">Work Code</label>
+          <input type="text" id="work_code" name="work_code"
+                 placeholder="1109004051/IF/IAY/789699" required>
+        </div>
+
+        <button type="submit">Generate Excel</button>
+      </form>
+
+      <!-- ✅ REAL-TIME STATUS PANEL -->
+      <div id="statusBox" style="display:none;text-align:center;margin-top:18px;">
+        <div class="spinner"></div>
+        <div id="statusText" style="font-size:12px;color:#475569;">
+          Initializing automation...
+        </div>
+      </div>
+
+      <div class="info">
+        Automation runs securely in background.<br>No manual steps or visible browser.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const steps = [
+      "Connecting to MNREGA Server...",
+      "Searching Work Code...",
+      "Opening Asset Register...",
+      "Fetching Muster Rolls...",
+      "Generating Excel File...",
+      "Almost Done..."
+    ];
+
+    document.querySelector('form').addEventListener('submit', function(){
+      const box = document.getElementById('statusBox');
+      const text = document.getElementById('statusText');
+      box.style.display = 'block';
+      let i = 0;
+      setInterval(()=>{
+        text.innerText = steps[i % steps.length];
+        i++;
+      }, 2000);
+    });
+  </script>
+
+  <footer>
+    Designed by <strong>Pavan Patel</strong>
+    <span>Email: pavanpatel0277@gmail.com</span>
+    <span>Contact: 8160265060</span>
+  </footer>
+
+</body>
+</html>
