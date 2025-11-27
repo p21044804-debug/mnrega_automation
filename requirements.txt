@@ -1,7 +1,5 @@
-flask
+Flask
 selenium
 pandas
 openpyxl
 gunicorn
-chromium
-
