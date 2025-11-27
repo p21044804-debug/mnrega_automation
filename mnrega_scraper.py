@@ -80,9 +80,11 @@ def run_mnrega_scraper(work_code: str, output_dir: str = ".") -> str:
     options.add_argument("--no-sandbox")
     options.add_argument("--log-level=3")
 
+    options.binary_location = "/usr/bin/chromium"
+
     driver = webdriver.Chrome(
-        service=Service(ChromeDriverManager().install()),
-        options=options,
+    service=Service("/usr/bin/chromedriver"),
+    options=options
     )
     wait = WebDriverWait(driver, 40)
     driver.set_window_size(1400, 900)
